@@ -1,0 +1,325 @@
+\documentclass[11pt]{article}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage[pdfpagemode=FullScreen, colorlinks=true]{hyperref}
+ \geometry{
+ a4paper,
+ tmargin=0mm,
+ bmargin=15mm,
+ left=20mm,
+ right=15mm,
+ top=15mm,
+ }
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\title{\textbf{Solving SUDOKU using different techniques}}
+\date{}
+\begin{document}
+\begin{titlepage}
+	\centering
+	\includegraphics[width=2.5cm]{/home/ayush/Documents/Sudoku/logo.png}\\[.5cm]
+	{\scshape\LARGE Indian Institute \\Of \\Information Technology,\\ Allahabad \par}
+	\vspace{1cm}
+	\rule{\textwidth}{1pt}	
+	\vspace{2pt}\vspace{-\baselineskip}
+	\rule{\textwidth}{0.4pt}
+	\vspace{0.1\textheight}
+		
+	\textcolor{red}{ 
+		{\Huge Solving SUDOKU}\\[0.5\baselineskip]
+		{\Large Using}\\[0.5\baselineskip]
+		{\Huge Different Techniques}
+	}
+	
+	\vspace{0.055\textheight} 
+	
+	\rule{0.3\textwidth}{0.4pt} 
+	\begin{multicols}{3} 
+	\textcolor{blue}{
+		\begin{flushleft} 
+		{\large Abhishek Pasi}\\[5pt] 
+		{\large Ayush Agnihotri}\\[5pt]
+		{\large Nidheesh Pandey}\\[5pt]
+		{\large Shreyansh Gupta}\\[5pt]
+		{\large Vishal Kumar Singh}\\[5pt]
+		\end{flushleft}
+		}
+		\columnbreak
+		 
+	\textcolor{blue}{
+		\begin{flushleft} 
+		{\large ICM2015002}\\[5pt] 
+		{\large IIM2015004}\\[5pt]
+		{\large IIM2015501}\\[5pt]
+		{\large IIM2015001}\\[5pt]
+		{\large IIT2015141}\\[5pt]
+		\end{flushleft}
+		}
+		\columnbreak
+
+	\textcolor{green}{
+		\begin{flushright}
+		{\Large \textsc{Under supervision}}\\
+		{\large of}\\
+		{\Large \textsc{\textbf{Dr. K P Singh}}}
+		\end{flushright}
+		}
+	\end{multicols}
+	
+\hfill
+		
+	\rule{\textwidth}{0.4pt} % Thin horizontal rule
+	
+	\vspace{2pt}\vspace{-\baselineskip} % Whitespace between rules
+	
+	\rule{\textwidth}{2pt} % Thick horizontal rule
+	
+\end{titlepage}
+\pagebreak
+%----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%----------------------------------------------------------------------------------------
+
+\pagenumbering{arabic}
+{ \doublespacing
+\pagenumbering{Roman}
+\tableofcontents % Prints the main table of contents
+\addtocontents{toc}{~\hfill\textbf{Page}\par}
+}
+\maketitle
+\setcounter{secnumdepth}{6}
+\section{ABOUT SUDOKU PUZZLE}
+Sudoku is a logic-based number placement puzzle.The puzzle area consists of a 9x9 grid divided into nine 3x3 grids.\\\\The constraints for the solution being :-
+\setlist{nolistsep}
+\begin{enumerate}[label=(\roman*)]
+\item each row should contain 1-9 numbers.
+\item each column should contain 1-9 numbers.
+\item each 3x3 grid should contain all 1-9 numbers
+\end{enumerate}
+
+\section{METHODS USED}
+\subsection{BRUTEFORCE (Exhaustive Search)}
+\subsubsection{Brute force approaches, specially  those which ask us to find all permutation of certain variables till a solution is found require backtracking.}
+\tab Backtracking definition -- "to go back along a path that you have just followed:\linebreak
+We went the wrong way and had to backtrack till we got to the right turning". (Source - Cambridge Dictionary)
+\\
+\linebreak
+\tab Backtracking is an algorithmic technique that relies on trying every possible move in order to find correct solution for a constrained problem.\\
+\linebreak
+\ \ Backtracking approach is implemented using recursion.\\
+\linebreak
+The basic idea of all backtracking algorithms is same.
+\begin{enumerate}[label=(\roman*)]
+\item We proceed with one of the many possible moves and try to solve the problem recursively.
+\item At any stage we assume steps taken by our algorithm is correct.
+\item At any step of our Algorithm , if it is found that , our problem can not be solved , no matter what choice we make, we go to previous stage and undo the move taken (since, it was a wrong move) and try next available choice at that stage.
+\item The steps \textbf{(i)}, \textbf{(ii)}, \textbf{(iii)}  are repeated until the problem is solved.
+\end{enumerate}
+\subsubsection{Solving SUDOKU using backtracking}
+\paragraph{OUR ALGORITHM}
+\begin{enumerate}[label=(\roman*)]
+\item Take input as 9x9 grid from file puzzle.txt ( should be a vaid sudoku puzzle).\\
+ Specify blank squares with zero.
+
+\item Find the first blank field (first zero).
+\item Call the solver ( solve(grid,x,y) ) with the first blank as an argument.
+ \item Find available moves by checking an \(x^{th}\) row, \(y^{th}\) column and a 3x3 grid of the target blank. (performed using set() object)
+\item Try the first move and identify the next blank to be filled.
+\item Fill the next blank with one of the available moves.
+\item If at any stage it is found that no move can solve the puzzle, go to previous blank and try the next available move in the set (backtracking)
+\item Repeat steps \textbf{(iv)}, \textbf{(v)}, \textbf{(vi)}, \textbf{(vii)} .
+\item The recursion will exit when the last blank is filled successfully. The solution is finally found.
+\end{enumerate}
+\subsection{ BACKTRACKING (Constraint Satisfaction Problem)}
+\subsubsection{A typical Constraint Satisfaction Problem (CSP) consists of :-}
+\begin{enumerate}[label=(\alph*)]
+\item Set of variables  X = \{x1, x2, x3, ...., xn\}
+\item A finite domain for each variable . A Domain specifies a set of values a variable can take.
+\item A set of constraints which defines set of values that variables can take simultaneously.
+\end{enumerate}
+
+\subsubsection{A Sudoku puzzle can be modelled as a CSP, :-}
+\begin{enumerate}[label=(\alph*)]
+\item set of variables X = \{set of empty places in an unsolved puzzle\}
+\item A finite domain for each variable. The Set of feasible values for a variable.
+\item constraints are already specified for sudoku in puzzle introduction :-
+\begin{enumerate}[label=(\roman*)]
+\item each row should contain 1-9 numbers.
+\item each column should contain 1-9 numbers.
+\item each 3x3 grid should contain all 1-9 numbers.
+\end{enumerate}
+\end{enumerate}
+Any CSP can be solved using Naive backtracking like done in first algorithms (Exhaustive Search)
+\subsubsection{Search Methods and Heuristics for solving a CSP }
+(in short)
+\begin{enumerate}[label= (\arabic*)]
+\item Variable ordering
+\item Value ordering
+\end{enumerate}
+
+\paragraph{ Variable ordering}
+.\\
+\quad \quad \  Decision to assign one variable before other
+two approaches :-
+\begin{enumerate}[label=(\arabic*)]
+\item \emph{\textbf{static}} :- pre defined order of assigning values to a variable based on properties of problem.
+\item \emph{\textbf{dynamic}} :- order of assigning values to a variable is based on information gathered in course of search.
+\end{enumerate}
+\subsubsection{OUR ALGORITHM}
+\underline{\textbf{Input}}\\
+\begin{enumerate}[label=(\roman*)]
+\item Take input as 9x9 grid from file puzzle.txt ( should be a vaid sudoku puzzle).\\
+Specify blank squares with zero.\\
+\\
+\textbf{Variable Ordering :}\\
+\item Find the domain of variables (blanks) one by one and keep pushing them to a list. Sort the list in increasing order of preference function.
+\item This way we will be assigning variables with starting from smallest domain first.\\
+\\
+\textbf{Solving the puzzle :}\\
+\item Call the solver ( solve(grid,l,0) ) with starting from the first variable with the smallest domain.
+\item Find available moves by checking \(x^{th} \) row, \(y^{th} \) column and a 3x3 grid of the target blank. (performed using set() object)
+\item Try the first move and identify the next blank to be filled.
+\item Fill the next blank with one of the available moves.
+\item If at any stage it is found that no move can solve the puzzle, go to previous blank and try the next available move in the set (backtracking)
+\item Repeat steps \textbf{(iv)}, \textbf{(v)}, \textbf{(vi)}, \textbf{(vii)}.
+\item The recursion will exit when the last blank (max domain) is filled successfully. The solution is finally found.
+\end{enumerate}
+\subsection{Genetic Algorithm}
+\subsubsection{Genetic Algorithms as the names suggest are inspired genetics.Genetic algorithms are quite effective in solving problems for which we already know some solution.GA optimises a solution by increasing its fitness level after each generation.}
+
+Steps involved in a typical genetic algorithm :-
+\\
+\linebreak
+\tab \textbf{Startoff}
+\linebreak
+\begin{enumerate}[label = (\roman*)]
+\item Begin by creating a set of possible solutions to the problem. Each solution is known as an 'Individual' and a set of Individuals is knows as population.
+\item Now that we have a generation we need to 'evolve'.
+\\
+\\ \textbf{Evolution}
+\linebreak
+\item 'Evolution' is a process of improving a generation by increasing its 'fitness'. We can achieve this by designing a good fitness function (problem specific). To produce next-generation form a population we use mutation and crossover operators.
+\item  Mutation is changing an individual, the crossover is mixing to individuals by choosing most suitable cross-over point.
+\item We chose top individuals from a population as a parent for next generation.Few inferior individuals are also selected as a parent to promote genetic diversity.
+\item After choosing parents for next generations, we mutate a few among them to promote a change between next and present generations. Parents are randomly selected and crossed to generate new individuals.
+\item Fitness of new generations must be greater than previous ones.\\
+  \linebreak
+  Produce generations till you find high-quality solutions.
+\end{enumerate}
+
+\subsubsection{OUR ALGORITHM}
+\tab Our algorithm is same as mentioned above.\\
+\linebreak
+What matters is the choice of fitness, crossover and mutation functions. Values of random select, crossover rate, and mutation rate are too important to ignore.\\
+\linebreak
+	\textbf{Currently our Algorithm is not able to solve the puzzle using genetic algorithm, every time it gets stuck on local minima .We have not been able to give it proper thought why it happens (due to lack of time) . At present the problem may be with our fitness function (or crossover rate, mutation rate).\\
+We promise that will try to improve our algorithm in coming days.}\\
+\linebreak
+\tab \textbf{Input} :
+\begin{enumerate}[label = (\roman*)]
+\item Take input as 9x9 grid from file puzzle.txt ( should be a vaid sudoku puzzle).
+	Specify blank squares with zero.\\
+	\textbf{Start off:}
+\item Firstly we create a initial set of random solutions i.e. population of size 'n' by calling function (population(grid, n) ), which in turn calls function ( individual(grid) ).
+\item The function (individual) fills the blank positions in subgrids with available values in its domain in random order(such that no element is repeated in subgrid).\\
+\textbf{Evolve :}
+\item Once we have our initial population, then we calculate the fitness of each individual in population.
+\item The fitness function in our algorithm is based on the number of duplicate values for a given position( x,y ) in the row and column to which it belongs i.e.( sum of number of duplicate value from grid[x][1..n] and grid[1...n][y] ). So lower the value of fitness function closer is the individual to final solution.
+\item Then we mutate the selected parents by calling the function( mutate(parent, grid) ). In our algorithm mutation process is done by swapping the non-fixed positions within the subgrid.
+\item After getting mutated solution, we do crossover by selecting father and mother from parent set. After this we select a random crossover point (between 0 to 8) which gives us a child. Crossover among parents continues until we get a population of size 'n'.
+\item The evolution process continues until we get a individual whose fitness is '0' (i.e. it is a solution to our input puzzle).
+\end{enumerate}
+\pagebreak
+\section{ANALYSIS :}
+Algorithms for Brute-force and CSP were run five times for each puzzle.\\
+Values for mean and standard deviation were noted in table given below.\\
+Full result with input and output puzzle is included in a file "\textbf{results.txt}".\\
+\textbf{To run code :}\\
+\linebreak
+\$ \textbf{python3 SudokuSolver.py times algorithm}\\
+\textbf{times} = Number of times you need to run the algorithm.\\
+\textbf{algorithm} = \textbf{1}-For Bruteforce, \textbf{2}-For Constraint Satisfaction Problem, \textbf{3}-For Genetic Algorithm 
+\begin{table}[!h]\centering
+\begin{tabular}{|l|l|l|l|l|} 
+\hline
+\textbf{S No.} & \textbf{Category}           & \textbf{Approach}        & \textbf{Avg Time} & \textbf{Standard Deviation} \\ \hline
+1              & Easy 1                      & Brute Force              & 0.0070542         & 2.19E-07                    \\ \hline
+2              & Easy 1                      & Constraint  Optimisation & 0.0129594         & 4.29E-07                    \\ \hline
+3              & Easy 2                      & Brute Force              & 2.1110646         & 0.0002734023                \\ \hline
+4              & Easy 2                      & Constraint  Optimisation & 0.0028972         & 1.77E-07                    \\ \hline
+5              & Easy 3                      & Brute Force              & 0.005672          & 1.48E-07                    \\ \hline
+6              & Easy 3                      & Constraint  Optimisation & 0.0097804         & 3.61E-05                    \\ \hline
+7              & Easy 4                      & Brute Force              & 0.0020938         & 9.72E-08                    \\ \hline
+8              & Easy 4                      & Constraint  Optimisation & 0.0018682         & 2.83E-09                    \\ \hline
+9              & Easy 5                      & Brute Force              & 0.0007548         & 1.26E-09                    \\ \hline
+10             & Easy 5                      & Constraint  Optimisation & 0.0032086         & 1.06E-07                    \\ \hline
+11             & Easy 6                      & Brute Force              & 0.0012786         & 4.05E-10                    \\ \hline
+12             & Easy 6                      & Constraint  Optimisation & 0.002235          & 3.85E-09                    \\ \hline
+13             & Medium 1                    & Brute Force              & 1.2922906         & 0.0002071376                \\ \hline
+14             & Medium 1                    & Constraint  Optimisation & 0.3687512         & 5.26E-06                    \\ \hline
+15             & Medium 2                    & Brute Force              & 0.8748586         & 3.70E-05                    \\ \hline
+16             & Medium 2                    & Constraint  Optimisation & 2.0253004         & 0.0001784205                \\ \hline
+17             & Medium 3                    & Brute Force              & 0.0142868         & 8.25E-09                    \\ \hline
+18             & Medium 3                    & Constraint  Optimisation & 0.0497016         & 1.99E-07                    \\ \hline
+19             & Medium 4                    & Brute Force              & 0.007692          & 4.73E-07                    \\ \hline
+20             & Medium 4                    & Constraint  Optimisation & 0.0040312         & 1.06E-07                    \\ \hline
+21             & Medium 5                    & Brute Force              & 0.0006704         & 1.53E-10                    \\ \hline
+22             & Medium 5                    & Constraint  Optimisation & 0.0067952         & 6.09E-07                    \\ \hline
+23             & Medium 6                    & Brute Force              & 0.017174          & 3.36E-09                    \\ \hline
+24             & Medium 6                    & Constraint  Optimisation & 0.0032122         & 3.33E-09                    \\ \hline
+25             & Hard 1                      & Brute Force              & 0.9864058         & 0.0003355001                \\ \hline
+26             & Hard 1                      & Constraint  Optimisation & 0.0584414         & 2.33E-07                    \\ \hline
+27             & Hard 2                      & Brute Force              & 2.3184416         & 0.0002873917                \\ \hline
+28             & Hard 2                      & Constraint  Optimisation & 0.5693892         & 8.66E-05                    \\ \hline
+29             & Hard 3                      & Brute Force              & 1.904462          & 0.0005580804                \\ \hline
+30             & Hard 3                      & Constraint  Optimisation & 0.05788           & 3.37E-06                    \\ \hline
+31             & Hard 4                      & Brute Force              & 0.001629          & 4.92E-10                    \\ \hline
+32             & Hard 4                      & Constraint  Optimisation & 0.0067274         & 7.07E-06                    \\ \hline
+33             & Hard 5                      & Brute Force              & 0.0755728         & 2.95E-06                    \\ \hline
+34             & Hard 5                      & Constraint  Optimisation & 0.1195058         & 4.72E-06                    \\ \hline
+35             & Hard 6                      & Brute Force              & 0.0070852         & 6.91E-07                    \\ \hline
+36             & Hard 6                      & Constraint  Optimisation & 0.0246638         & 5.31E-06                    \\ \hline
+37             & World's hardest(AI Escagot) & Brute Force              & 0.1538032         & 8.86E-06                    \\ \hline
+38             & World's hardest(AI Escagot) & Constraint  Optimisation & 1.1836058         & 0.000739928                 \\ \hline
+\end{tabular}
+\caption{\emph{\underline{\textbf{Mean and S.D. values for five runs of each algorithm on given puzzle.}}}}
+\label{my-label}
+\end{table}
+
+\begin{enumerate}[label = (\Roman*)]
+\item From the above table it can be clearly seen that Constraint Satisfaction approach works best.
+\item In some cases it can be observed that brute force approach performs better than CSP approach. This is generally the case when time for computing variable order(our heuristic) is high in comparison to actually solving the puzzle.\\ 
+	In many cases our heuristic for variable ordering is not suited for the given puzzle. In such cases brute force algo performs slightly better than CSP.
+\item It is also observed that time for solving puzzle does not directly depend on hardness of puzzle. A few easy puzzles took more time to solve than AL escargot Sudoku puzzle( one of the hardest sudoku puzzles ever created by Finnish mathematician 'Arto Inkala').
+\item Altogether, We found backtracking and CSP are quite good for solving sudoku puzzle. 
+\item Our attempt to solve sudoku using Genetic Algorithm was unsuccessful. \textbf{Increase in fitness quality from generation to generation is quite slow and gets stuck on local minima.}\\
+	Also , creating many generations takes time . In our opinion, solving sudoku using genetic algorithm is quite challenging .
+We will try to solve it in coming days.
+\end{enumerate}
+\subsection{Time and Space complexity}
+\subsubsection{Bruteforce }
+\tab Time \tab:\tab  {\Large \textbf{O(}Nx\(b^m\)\textbf{)}} \ \ \ i.e. exponential in max depth of state space .\\
+\tab Space\tab:\tab  {\Large \textbf{O(}bm\textbf{)}}\tab i.e. linear in max depth of state-space.\\
+\linebreak
+\textbf{b :} Maximum branching factor.\\
+\linebreak
+\tab In this case, Maximum domain of a variable(blank).\\
+\linebreak
+\textbf{m :} Maximum depth of state-space.\\
+\subsubsection{Constraint Satisfaction Problem}
+\tab Same as bruteforce. However, most of the time value of '\textbf{m}' is less.
+\subsection{Number of nodes explored :}
+Number of nodes explored can be easily calculated by counting number of times we change entries of Sudoku puzzle.\\
+\linebreak
+Maximum nujmber of nodes explored = {\Large \textbf{O(\(b^m\))}}\\
+\linebreak
+\textbf{b :} Maximum branching factor.\\
+\linebreak
+\textbf{m :} Maximum depth of state-space.\\
+
+\end{document}
