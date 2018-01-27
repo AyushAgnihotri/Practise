@@ -1,0 +1,10 @@
+def klaudia(n,x):
+        return (n+x)//2
+def natalia(n,x):
+        return (n-x)//2
+t=10
+for i in range(0,t):
+	num=int(input())
+	x0=int(input())
+	print(int(klaudia(num,x0)))
+	print(int(natalia(num,x0)))

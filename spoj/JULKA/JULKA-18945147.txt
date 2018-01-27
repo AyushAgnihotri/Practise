@@ -1,0 +1,7 @@
+for i in range(0,10):
+	total=(int(input()))
+	d=(int(input()))
+	klaudia=int((total+d)//2)
+	natalia=int((total-d)//2)
+	print(klaudia)
+	print(natalia)

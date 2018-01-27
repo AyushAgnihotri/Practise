@@ -1,0 +1,4 @@
+a=raw_input()
+print(a+' '+'Silva'+' '+'200120039010')
+print(a+' '+'Pineda'+' '+'199810024010')
+print(a+' '+'Monsalve'+' '+'200410061010')
